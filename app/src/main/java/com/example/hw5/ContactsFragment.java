@@ -1,15 +1,13 @@
 package com.example.hw5;
 
-import static com.example.hw5.InformationFragment.CONST_FIRST_NAME;
-import static com.example.hw5.InformationFragment.CONST_ID;
-import static com.example.hw5.InformationFragment.CONST_PHONE;
-import static com.example.hw5.InformationFragment.CONST_SECOND_NAME;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -17,16 +15,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import java.lang.reflect.Array;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-
-import kotlin.jvm.JvmField;
 
 
 public class ContactsFragment extends Fragment {
+
+    public static ContactsFragment newInstance(List<Contact> contacts) {
+        Bundle args = new Bundle();
+        args.putSerializable(CONST_INTENT_KEY, (Serializable) contacts);
+        ContactsFragment fragment = new ContactsFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public ContactsFragment() {
         super(R.layout.fragment_contacts);
     }
@@ -34,13 +37,21 @@ public class ContactsFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ArrayList<Contact> data;
         Contact firstContact = new Contact("Mike", "Smith", "2020327");
         Contact secondContact = new Contact("Bob", "Bale", "33333333");
         Contact thirdContact = new Contact("Robin", "Musk", "44444447");
         Contact fourthContact = new Contact("Jul", "Fisher", "523542357");
-        List<Contact> contactList = Arrays.asList(firstContact, secondContact, thirdContact, fourthContact);
+
+        ArrayList<Contact> contactList = new ArrayList<Contact>();
+        contactList.add(firstContact);
+        contactList.add(secondContact);
+        contactList.add(thirdContact);
+        contactList.add(fourthContact);
+
+
         View view1 = this.getView();
 
         TextView firstTextView = view1.findViewById(R.id.first_contact);
@@ -49,27 +60,21 @@ public class ContactsFragment extends Fragment {
         TextView fourthTextView = view1.findViewById(R.id.fourth_contact);
 
 
-        Contact firstC = contactList.get(0);
-        Contact secondC = contactList.get(1);
-        Contact thirdC = contactList.get(2);
-        Contact fourthC = contactList.get(3);
-
-        firstTextView.setText(firstC.firstName + " " + firstC.secondName + " " + firstC.phoneHumber);
-        secondTextView.setText(secondC.firstName + " " + secondC.secondName + " " + secondC.phoneHumber);
-        thirdTextView.setText(thirdC.firstName + " " + thirdC.secondName + " " + thirdC.phoneHumber);
-        fourthTextView.setText(fourthC.firstName + " " + fourthC.secondName + " " + fourthC.phoneHumber);
-
         Bundle bundle = new Bundle();
         Fragment informationFragment = new InformationFragment();
         FragmentTransaction ft = getParentFragmentManager().beginTransaction();
 
+        if (getArguments() != null) {
 
+            ArrayList<Contact> list = (ArrayList<Contact>) getArguments().getSerializable(CONST_INTENT_KEY);
+            contactList = list;
+        }
+        ArrayList<Contact> finalContactList = contactList;
         View.OnClickListener fistOnClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putString(CONST_FIRST_NAME, firstContact.firstName);
-                bundle.putString(CONST_SECOND_NAME, firstContact.secondName);
-                bundle.putString(CONST_PHONE, firstContact.phoneHumber);
+                bundle.putSerializable(CONST_INTENT_KEY, finalContactList);
+
                 bundle.putInt(CONST_ID, 0);
                 informationFragment.setArguments(bundle);
                 ft.replace(R.id.container, informationFragment);
@@ -77,46 +82,44 @@ public class ContactsFragment extends Fragment {
 
             }
         };
+        ArrayList<Contact> finalContactList1 = contactList;
         View.OnClickListener secondOnClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putString(CONST_FIRST_NAME, secondContact.firstName);
-                bundle.putString(CONST_SECOND_NAME, secondContact.secondName);
-                bundle.putString(CONST_PHONE, secondContact.phoneHumber);
-                bundle.putInt(CONST_ID, 0);
+                bundle.putSerializable(CONST_INTENT_KEY, finalContactList1);
+                bundle.putInt(CONST_ID, 1);
                 informationFragment.setArguments(bundle);
                 ft.replace(R.id.container, informationFragment);
                 ft.commit();
 
             }
         };
+        ArrayList<Contact> finalContactList2 = contactList;
         View.OnClickListener thirdOnClick = new View.OnClickListener() {
             @Override
-        public void onClick (View v){
-            bundle.putString(CONST_FIRST_NAME, thirdContact.firstName);
-            bundle.putString(CONST_SECOND_NAME, thirdContact.secondName);
-            bundle.putString(CONST_PHONE, thirdContact.phoneHumber);
-            bundle.putInt(CONST_ID, 0);
-            informationFragment.setArguments(bundle);
-            ft.replace(R.id.container, informationFragment);
-            ft.commit();
+            public void onClick(View v) {
+                bundle.putSerializable(CONST_INTENT_KEY, finalContactList2);
+                bundle.putInt(CONST_ID, 2);
+                informationFragment.setArguments(bundle);
+                ft.replace(R.id.container, informationFragment);
+                ft.commit();
 
-        }
-    };
+            }
+        };
 
-    View.OnClickListener  fourthOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            bundle.putString(CONST_FIRST_NAME, fourthContact.firstName);
-            bundle.putString(CONST_SECOND_NAME, fourthContact.secondName);
-            bundle.putString(CONST_PHONE, fourthContact.phoneHumber);
-            bundle.putInt(CONST_ID, 0);
-            informationFragment.setArguments(bundle);
-            ft.replace(R.id.container, informationFragment);
-            ft.commit();
+        ArrayList<Contact> finalContactList3 = contactList;
+        View.OnClickListener fourthOnClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bundle.putSerializable(CONST_INTENT_KEY, finalContactList3);
 
-        }
-    };
+                bundle.putInt(CONST_ID, 3);
+                informationFragment.setArguments(bundle);
+                ft.replace(R.id.container, informationFragment);
+                ft.commit();
+
+            }
+        };
         firstTextView.setOnClickListener(fistOnClick);
         secondTextView.setOnClickListener(secondOnClick);
         thirdTextView.setOnClickListener(thirdOnClick);
@@ -124,7 +127,17 @@ public class ContactsFragment extends Fragment {
 
 
 
-}
+        firstTextView.setText(contactList.get(0).firstName
+                + " " + contactList.get(0).secondName + " " + contactList.get(0).phoneHumber);
+        secondTextView.setText(contactList.get(1).firstName
+                + " " + contactList.get(1).secondName + " " + contactList.get(1).phoneHumber);
+        thirdTextView.setText(contactList.get(2).firstName
+                + " " + contactList.get(2).secondName + " " + contactList.get(2).phoneHumber);
+        fourthTextView.setText(contactList.get(3).firstName
+                + " " + contactList.get(3).secondName + " " + contactList.get(3).phoneHumber);
+
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,8 +154,12 @@ public class ContactsFragment extends Fragment {
 
     }
 
-    public static final String CONST_FIRST_NAME = "FIRSTNAME";
-    public static final String CONST_SECOND_NAME = "SECONDNAME";
-    public static final String CONST_PHONE = "PHONE";
+
+    public static final String CONST_INTENT_KEY = "key";
+
     public static final String CONST_ID = "ID";
+
+
+
+
 }

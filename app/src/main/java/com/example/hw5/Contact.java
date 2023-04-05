@@ -10,4 +10,10 @@ class Contact {
         this.secondName = secondName;
         this.phoneHumber = phoneHumber;
     }
+    public Contact() {
+
+    }
+
+
 }
+
