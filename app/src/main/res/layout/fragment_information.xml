@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/first_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginTop="@dimen/dp_60"
+        android:gravity="center"
+        android:hint="@string/first_name">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/second_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginTop="@dimen/dp_60"
+        android:gravity="center"
+        android:hint="@string/second_name">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_marginTop="@dimen/dp_60"
+        android:gravity="center"
+        android:hint="@string/phone_number">
+
+    </TextView>
+
+</LinearLayout>

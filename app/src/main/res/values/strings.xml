@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">hw5</string>
+    <string name="empty">empty</string>
+    <string name="first_name">first name</string>
+    <string name="second_name">second name</string>
+    <string name="phone_number">phone number</string>
+</resources>
